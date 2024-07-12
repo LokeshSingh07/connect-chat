@@ -1,0 +1,31 @@
+{
+  "name": "connect-api",
+  "version": "1.0.0",
+  "description": "full-stack Chat App Project with realtime messaging fuctionality with socket.io",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon -r dotenv/config --experimental-json-modules src/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LokeshSingh07/connect-chat.git"
+  },
+  "author": "Lokesh singh",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/LokeshSingh07/connect-chat/issues"
+  },
+  "homepage": "https://github.com/LokeshSingh07/connect-chat#readme",
+  "devDependencies": {
+    "nodemon": "^3.1.4",
+    "prettier": "^3.3.2"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.5.0"
+  }
+}
