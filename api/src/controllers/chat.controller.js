@@ -97,8 +97,138 @@ const fetchChats = asyncHandler(async(req,res)=> {
 
 
 
+const createGroupChat = asyncHandler(async(req,res)=> {
+    const { chatName, users } = req.body;
+
+    if (!chatName || !users) {
+        throw new ApiError(403, "All fields are required");
+    }
+
+    // we can't send array directly, we need to send it in the stringyfy format
+    const usersIds = JSON.parse(users);
+    if(usersIds.length < 2){
+        throw new ApiError(403, "Minimum 2 users are required to create a group chat");
+    }
+
+    usersIds.push(req.user._id);
+
+    const chatData = await Chat.create({
+        chatName,
+        isGroupChat: true,
+        users: usersIds,
+        groupAdmin: req.user._id
+    });
+
+    const ChatDetails = await Chat.findOne(chatData._id)
+    .populate("users", "name email pic")
+    .populate({
+        path: "latestMessage",
+    }).exec();
 
 
+    return res.status(200)
+    .json(
+        new ApiResponse(200, ChatDetails, "Group created successfully")
+    )
+})
+
+
+
+const renameGroup = asyncHandler(async(req,res)=> {
+    const { chatId, chatName } = req.body;
+
+    if(!chatId || !chatName){
+        throw new ApiError(403, "All fields are required");
+    }
+
+    const chatData = await Chat.findByIdAndUpdate(
+        {_id: chatId},
+        {
+            $set: {chatName: chatName}
+        },
+        {new: true}
+    )
+    .populate("users", "name email pic")
+    .populate("latestMessage")
+    .exec();
+
+    return res
+    .status(200)
+    .json(
+        new ApiResponse(200, chatData, "Group renamed successfully")
+    )
+})
+
+
+
+
+const addToGroup = asyncHandler(async(req,res)=>{
+    const { chatId, userId } = req.body;
+
+    if(!chatId || !userId){
+        throw new ApiError(403, "All fields are required");
+    }
+
+    const chatData = await Chat.findByIdAndUpdate(
+        chatId,
+        {
+            $push: {
+                users: userId
+            }
+        },
+        {new: true}
+    )
+    .populate("users", "name email pic")
+    .populate("latestMessage")
+    .exec();
+
+    return res
+    .status(200)
+    .json(
+        new ApiResponse(
+            200,
+            chatData,
+            "User added to group successfully"
+        )
+    )
+
+})
+
+
+
+
+const removeFromGroup = asyncHandler(async(req,res)=> {
+    const { chatId, userId } = req.body;
+    
+    if(!chatId || !userId){
+        throw new ApiError(403, "All fields are required");
+    }
+
+    const chatData = await Chat.findByIdAndUpdate(
+        {_id: chatId},
+        {
+            $pull: {
+                users: userId
+            }
+        },
+        {new: true}
+    )
+    .populate("users", "name email pic")
+    .populate("latestMessage")
+    .exec();
+
+
+    return res
+    .status(200)
+    .json(
+        new ApiResponse(
+            200,
+            chatData,
+            "User remove to group successfully"
+        )
+    )
+
+})
 
 
 
@@ -106,6 +236,9 @@ const fetchChats = asyncHandler(async(req,res)=> {
 
 export {
     accessChat,
-    fetchChats
-
+    fetchChats,
+    createGroupChat,
+    renameGroup,
+    addToGroup,
+    removeFromGroup
 };
