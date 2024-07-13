@@ -12,7 +12,7 @@ const verifyJWT = asyncHandler(async(req, res, next)=> {
         }
 
         // verify the token
-        const decode = jwt.verify(accessToken, ACCESS_TOKEN_SECRET);
+        const decode = jwt.verify(accessToken, process.env.ACCESS_TOKEN_SECRET);
 
         req.user = decode;
         next();

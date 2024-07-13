@@ -70,7 +70,7 @@ const login = asyncHandler(async(req,res)=>{
         throw new ApiError(403, "Invalid User credentials");
     }
 
-    const token = existedUser.generateRefreshToken();
+    const token = await existedUser.generateAccessToken();
 
     const loggedInUser = await User.findById(existedUser._id)
     .select("-password ")
@@ -83,11 +83,14 @@ const login = asyncHandler(async(req,res)=>{
 
     return res
     .status(200)
-    .cookie("token", token, options)
+    .cookie("accessToken", token, options)
     .json(
         new ApiResponse(
             200,
-            {user: loggedInUser},
+            {   
+                accessToken: token,
+                user: loggedInUser
+            },
             "User logged in successfully"
         )
     )
