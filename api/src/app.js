@@ -17,11 +17,12 @@ app.use(express.urlencoded({extended: true, limit: "16kb"}));
 
 
 // routes import
+import userRoutes from "./routes/user.routes.js";
 
 
 
 // routes declaration
-
+app.use("/api/v1/user", userRoutes);
 
 
 
