@@ -4,11 +4,12 @@ const router = Router();
 
 // import controllers/Md
 import { verifyJWT } from "../middlewares/auth.middleware.js";
-import { accessChat } from "../controllers/chat.controller.js"
+import { accessChat, fetchChats } from "../controllers/chat.controller.js"
 
 
 // API route  
-router.route("/").post(verifyJWT, accessChat);
+router.route("/").post(verifyJWT, accessChat);      // create & fetch chat
+router.route("/").get(verifyJWT, fetchChats);
 
 
 

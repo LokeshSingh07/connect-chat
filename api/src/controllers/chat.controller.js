@@ -15,7 +15,7 @@ import { ApiResponse } from "../utils/ApiResponse.js"
 
 
 // creating and fetching chat b/w two user
-const accessChat = asyncHandler(async(req,res)=>{
+const accessChat = asyncHandler(async(req,res)=> {
     const { userId } = req.body;
 
     if(!userId){
@@ -75,6 +75,29 @@ const accessChat = asyncHandler(async(req,res)=>{
 
 
 
+const fetchChats = asyncHandler(async(req,res)=> {
+    const allChats = await Chat.find({
+        users: { $in: [req.user._id] }
+    })
+    .populate("users", "name email pic")
+    .populate("latestMessage")
+    .sort({updatedAt: 1})
+    .exec();
+
+    return res.status(200)
+    .json(
+        new ApiResponse(
+            200,
+            allChats,
+            "successfully fetched all chats"
+        )
+    )
+})
+
+
+
+
+
 
 
 
@@ -82,5 +105,7 @@ const accessChat = asyncHandler(async(req,res)=>{
 
 
 export {
-    accessChat
+    accessChat,
+    fetchChats
+
 };
