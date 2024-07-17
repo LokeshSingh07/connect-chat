@@ -60,3 +60,20 @@
         transform: translateX(0);
     }
 }
+
+
+input:focus {
+    background-color: #d8ffe1;
+    border-color: rgb(65, 192, 65);
+    outline: none; 
+}
+
+.inputField{
+    width: 100%;
+    padding: 15px;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    font-size: 14px;
+    transition: background-color 0.3s ease;
+}

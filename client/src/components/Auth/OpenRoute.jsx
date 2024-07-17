@@ -4,13 +4,13 @@ import { Navigate } from 'react-router-dom';
 
 
 const OpenRoute = ({children}) => {
-    const token = null;                 // TODO
+    const token = localStorage.getItem('token')
 
     if(token === null){
         return children;
     }
     else{
-        return <Navigate to=""/>        // TODO
+        return <Navigate to="/"/>        // TODO
     }
 
 }

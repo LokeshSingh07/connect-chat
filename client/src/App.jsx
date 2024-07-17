@@ -4,6 +4,8 @@ import { Route, Routes } from 'react-router-dom';
 import Signup from './pages/Signup';
 import Login from './pages/Login';
 import ErrorPage from "./pages/ErrorPage"
+import SecuredRoute from './components/Auth/SecuredRoute';
+import Home from "./pages/Home"
 
 
 
@@ -17,16 +19,27 @@ function App() {
 
       <Routes>
 
+        <Route
+          path="/home"
+          element={<Home/>}
+        />
 
         <Route 
           path="/"
-          element={<Login />} 
-          
+          element={
+            <SecuredRoute>
+              <Login />
+            </SecuredRoute>
+          } 
         />
 
         <Route 
           path='/signup' 
-          element={<Signup/>}
+          element={
+            <SecuredRoute>
+              <Signup/>
+            </SecuredRoute>
+          }
 
         />
 

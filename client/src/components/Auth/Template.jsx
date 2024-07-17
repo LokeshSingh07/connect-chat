@@ -2,7 +2,7 @@ import React from 'react';
 import "../common/common.css";
 import Logo from "../../assets/logo.png"
 import { Link } from 'react-router-dom';
-import SignupForm from "./SingupForm";
+import SignupForm from "./SignupForm";
 import LoginForm from "./LoginForm";
 
 
