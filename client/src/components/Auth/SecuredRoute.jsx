@@ -10,7 +10,7 @@ const SecuredRoute = ({children}) => {
         return children;
     }
     else{
-        return <Navigate to="/home"/>       // TODO
+        return <Navigate to="/"/>       // TODO
     }
 }
 

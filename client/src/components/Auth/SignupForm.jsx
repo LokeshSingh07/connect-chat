@@ -2,13 +2,15 @@ import React from 'react'
 import "../../App.css";
 import { useState, useEffect } from 'react';
 import { FaEye, FaEyeSlash } from "react-icons/fa";
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 
 
 const SignupForm = () => {
 
   const [formData, setFormData] = useState({
-    fullName: '',
+    name: '',
     email: '',
     password: '',
     confirmPassword: '',
@@ -16,7 +18,7 @@ const SignupForm = () => {
 
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-
+  const navigate = useNavigate();
 
 
   const handleOnChange = (e)=>{
@@ -26,23 +28,33 @@ const SignupForm = () => {
     )
   }
 
-  const handleOnSubmit = (e)=>{
+  const handleOnSubmit = async(e)=>{
     e.preventDefault();
     console.log(formData);
+
+    try{
+      const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/api/v1/user/signup`, formData);
+
+      console.log(response.data);
+      navigate("/");
+    }
+    catch(err){
+      console.log(err);
+    }
 
   }
 
 
     return (
-    <div className='w-[90%] sm:w-[60%] lg:w-[40%]'>
+    <div className='w-[90%] sm:w-[60%] lg:w-[45%]'>
       <form onSubmit={handleOnSubmit} className='space-y-[10px]'>
         {/* full name */}
         <div>
           <input
             required
             type="text"
-            name="fullName"
-            value={formData.fullName}
+            name="name"
+            value={formData.name}
             onChange={handleOnChange}
             placeholder="Full Name"
             className='inputField'

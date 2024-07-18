@@ -5,6 +5,7 @@ import Signup from './pages/Signup';
 import Login from './pages/Login';
 import ErrorPage from "./pages/ErrorPage"
 import SecuredRoute from './components/Auth/SecuredRoute';
+import OpenRoute from "./components/Auth/OpenRoute.jsx";
 import Home from "./pages/Home"
 
 
@@ -19,35 +20,38 @@ function App() {
 
       <Routes>
 
-        <Route
-          path="/home"
-          element={<Home/>}
-        />
 
         <Route 
           path="/"
           element={
-            <SecuredRoute>
+            <OpenRoute>
               <Login />
-            </SecuredRoute>
-          } 
+            </OpenRoute>
+          }
         />
 
         <Route 
           path='/signup' 
           element={
-            <SecuredRoute>
+            <OpenRoute>
               <Signup/>
-            </SecuredRoute>
+            </OpenRoute>
           }
 
         />
 
 
+        <Route
+          path="/home"
+          element={
+            <SecuredRoute>
+              <Home/>
+            </SecuredRoute>  
+          }
+        />
+
+
         <Route path='*' element={<ErrorPage/>}/>
-
-
-
       </Routes>
 
 

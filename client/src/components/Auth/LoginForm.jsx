@@ -2,6 +2,9 @@ import React, { useState } from 'react'
 import "../../App.css";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import axios from 'axios';
+import { useNavigate } from "react-router-dom"
+import toast from "react-hot-toast";
+
 
 
 
@@ -13,7 +16,7 @@ const LoginForm = () => {
   const {email, password} = formData;
 
   const [showPassword, setShowPassword] = useState(false);
-
+  const navigate = useNavigate();
 
 
   const handleOnChange = (e)=>{
@@ -28,13 +31,15 @@ const LoginForm = () => {
 
   const handleOnSubmit = async(e)=>{
     e.preventDefault();
-    console.log('form submitted', formData);
+    // console.log('form submitted', formData);
 
     try{
       const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/api/v1/user/login`, formData)
 
-      console.log(response.data.data);
-      localStorage.setItem('accesToken', response.data.data.token);
+      // console.log(response.data.data);
+      localStorage.setItem('accessToken', response.data.data.token);
+      navigate('/home');
+      toast.success("Logged in")
     }
     catch(err){
       console.log(err);
@@ -44,7 +49,7 @@ const LoginForm = () => {
 
 
   return (
-    <div className='w-[90%] sm:w-[60%] lg:w-[40%]'>
+    <div className='w-[90%] sm:w-[60%] lg:w-[45%]'>
       <form onSubmit={handleOnSubmit} className='space-y-[10px]'>
         {/* email */}
         <div>
@@ -90,6 +95,12 @@ const LoginForm = () => {
         >
           Log in
         </button>
+
+        <div onClick={()=> setFormData({email:"demo@gmail.com", password:"1212"})}
+          className='inputField flexbox bg-red-500/85 font-medium text-[rgb(255,247,247)]'
+        >
+          Get Guest User Credentials
+        </div>
 
 
       </form>
