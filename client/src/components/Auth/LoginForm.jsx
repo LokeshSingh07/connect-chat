@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import "../../App.css";
-import { FaEye, FaEyeSlash } from "react-icons/fa";
+import { FaEye, FaEyeSlash, FaSpinner } from "react-icons/fa";
 import axios from 'axios';
 import { useNavigate } from "react-router-dom"
 import toast from "react-hot-toast";
@@ -16,6 +16,7 @@ const LoginForm = () => {
   const {email, password} = formData;
 
   const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
 
@@ -31,6 +32,7 @@ const LoginForm = () => {
 
   const handleOnSubmit = async(e)=>{
     e.preventDefault();
+    setLoading(true);
     // console.log('form submitted', formData);
 
     try{
@@ -44,7 +46,9 @@ const LoginForm = () => {
     catch(err){
       console.log(err);
     }
-
+    finally{
+      setLoading(false);
+    }
   }
 
 
@@ -91,9 +95,11 @@ const LoginForm = () => {
 
         {/* submit */}
         <button type='submit'
-          className='inputField bg-green-400 font-medium'
+          className='inputField flexbox bg-green-400 font-medium'
         >
-          Log in
+          {
+            loading ? <FaSpinner className='animate-spin'/> : "Log in"
+          }
         </button>
 
         <div onClick={()=> setFormData({email:"demo@gmail.com", password:"1212"})}

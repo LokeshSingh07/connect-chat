@@ -1,9 +1,10 @@
 import React from 'react'
 import "../../App.css";
 import { useState, useEffect } from 'react';
-import { FaEye, FaEyeSlash } from "react-icons/fa";
+import { FaEye, FaEyeSlash, FaSpinner } from "react-icons/fa";
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import toast from 'react-hot-toast';
 
 
 
@@ -18,6 +19,7 @@ const SignupForm = () => {
 
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
 
@@ -30,18 +32,26 @@ const SignupForm = () => {
 
   const handleOnSubmit = async(e)=>{
     e.preventDefault();
-    console.log(formData);
-
+    // console.log(formData);
+    
+    // check password and cofirm password
+    if(formData.password !== formData.confirmPassword){
+      toast.error("Password and Confirm Password does not match");
+      return;
+    }
+    
+    setLoading(true);
     try{
       const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/api/v1/user/signup`, formData);
 
-      console.log(response.data);
+      // console.log(response.data);
       navigate("/");
+      toast.success("Account created");
     }
     catch(err){
       console.log(err);
     }
-
+    setLoading(false);
   }
 
 
@@ -129,9 +139,11 @@ const SignupForm = () => {
 
         {/* submit button */}
         <button type='submit'
-          className='inputField bg-green-400 font-medium'
+          className='inputField bg-green-400 flexbox font-medium'
         >
-          Create Account
+          {
+            loading ? <FaSpinner className='animate-spin'/> : "Create Account"
+          }
         </button>
 
 
