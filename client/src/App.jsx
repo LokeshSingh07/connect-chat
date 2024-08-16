@@ -7,6 +7,7 @@ import ErrorPage from "./pages/ErrorPage"
 import SecuredRoute from './components/Auth/SecuredRoute';
 import OpenRoute from "./components/Auth/OpenRoute.jsx";
 import Home from "./pages/Home"
+import Chats from './pages/Chats.jsx';
 
 
 
@@ -46,6 +47,15 @@ function App() {
           element={
             <SecuredRoute>
               <Home/>
+            </SecuredRoute>  
+          }
+        />
+
+        <Route
+          path="/chats"
+          element={
+            <SecuredRoute>
+              <Chats/>
             </SecuredRoute>  
           }
         />

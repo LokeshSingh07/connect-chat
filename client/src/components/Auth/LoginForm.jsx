@@ -38,8 +38,10 @@ const LoginForm = () => {
     try{
       const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/api/v1/user/login`, formData)
 
+      console.log("response: ", response);
       // console.log(response.data.data);
       localStorage.setItem('accessToken', response.data.data.token);
+      localStorage.setItem('user', JSON.stringify(response.data.data.user));
       navigate('/home');
       toast.success("Logged in")
     }

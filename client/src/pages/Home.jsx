@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
 import "../App.css"
 import toast from 'react-hot-toast';
@@ -8,6 +8,15 @@ import toast from 'react-hot-toast';
 
 const Home = () => {
   const navigate = useNavigate();
+
+  useEffect(()=>{
+      const user = JSON.parse(localStorage.getItem("user"));
+  
+      if(user){
+        navigate("/chats");
+      }
+    }, []);
+  
 
   const logout = ()=>{
     localStorage.removeItem('accessToken')
