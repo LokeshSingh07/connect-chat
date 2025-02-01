@@ -9,7 +9,7 @@ import { asyncHandler } from "../utils/asyncHandler.js";
 
 
 
-const singup = asyncHandler(async(req,res)=>{
+const signup = asyncHandler(async(req,res)=>{
     // get name, email, password from req.body
     // validation
     // check user exist or not
@@ -130,7 +130,7 @@ const getAllUser = asyncHandler(async(req,res)=>{
 
 
 export { 
-    singup, 
+    signup, 
     login, 
     getAllUser 
 };
