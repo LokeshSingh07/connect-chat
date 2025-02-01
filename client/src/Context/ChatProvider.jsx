@@ -1,8 +1,6 @@
-import { createContext, useContext, useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom";
 
-
-
+import { createContext, useContext, useState, useEffect } from "react";
 
 
 const ChatContext = createContext();
@@ -14,14 +12,13 @@ const ChatProvider = ({children})=>{
 
 
     useEffect(()=>{
-        const userInfo = JSON.parse(localStorage.getItem('user'));
+        const userInfo = JSON.parse(localStorage.getItem("user"));
         setUser(userInfo);
 
         if(!userInfo){
-            navigate('/chats');
+            navigate("/");
         }
-
-    },[]);
+    },[navigate]);
 
 
 
@@ -34,9 +31,9 @@ const ChatProvider = ({children})=>{
 }
 
 
-
 export const ChatState = ()=>{
     return useContext(ChatContext);
 }
+
 
 export default ChatProvider;

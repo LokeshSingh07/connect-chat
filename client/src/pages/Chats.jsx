@@ -14,16 +14,12 @@ const Chats = () => {
   
     return (
     <div className='w-full h-screen'>
-        
         {user && <SideDrawer/>}
 
         <div className='flex justify-between items-center'>
             {user && <MyChats/>}
             {user && <ChatBox/>}
         </div>
-
-
-
 
     </div>
   )
