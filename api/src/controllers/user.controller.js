@@ -120,7 +120,8 @@ const getAllUser = asyncHandler(async(req,res)=>{
                 total: users.length,
                 users: users
             }, 
-            "All Users fetched successfully")
+            "All Users fetched successfully"
+        )
     )
 })
 
