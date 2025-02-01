@@ -63,7 +63,8 @@
 
 
 input:focus {
-    background-color: #d8ffe1;
+    /* background-color: #d8ffe1; */
+    background-color: #e8ffee;
     border-color: rgb(65, 192, 65);
     outline: none; 
 }

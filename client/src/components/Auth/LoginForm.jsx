@@ -55,7 +55,7 @@ const LoginForm = () => {
 
 
   return (
-    <div className='w-[90%] sm:w-[60%] lg:w-[45%]'>
+    <div className='w-[90%] sm:w-[60%] md:w-[50%] lg:w-[45%]'>
       <form onSubmit={handleOnSubmit} className='space-y-[10px]'>
         {/* email */}
         <div>
@@ -105,7 +105,7 @@ const LoginForm = () => {
         </button>
 
         <div onClick={()=> setFormData({email:"demo@gmail.com", password:"1212"})}
-          className='inputField flexbox bg-red-500/85 font-medium text-[rgb(255,247,247)]'
+          className='inputField flexbox bg-red-500/85 font-medium text-[rgb(255,247,247)] select-none cursor-pointer'
         >
           Get Guest User Credentials
         </div>

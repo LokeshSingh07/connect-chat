@@ -15,7 +15,7 @@ const Template = ({title, description, image, formType}) => {
         {/* leftbox */}
         <div className={`w-full lg:w-[60%] ${formType =='login' ? "slideInFromLeft" : "slideInFromRight"}`}>
             <div className='flexbox justify-between m-7'>
-                <div className='flexbox gap-2'>
+                <div className='flexbox gap-2 cursor-pointer'>
                     <img src={Logo}
                         alt='logo'
                         loading='lazy'
@@ -23,13 +23,13 @@ const Template = ({title, description, image, formType}) => {
                     />
                     <h2 className='text-[18px] font-semibold'>Connect</h2>
                 </div>
-                <div className='flexbox gap-2 text-[14px]'>
+                <div className='flexbox gap-2 text-[14px] select-none'>
                     <p>
                         {
                             formType == "login" ? "Don't have an account?" : "have an account?"
                         }
                     </p>
-                    <div className='text-green-500'>     
+                    <div className='text-green-500 hover:text-green-600 transition-all delay-100'>     
                         {
                             formType == "login" ? <Link to="/signup">sign up!</Link> : <Link to="/">login!</Link>
                         }
@@ -37,7 +37,7 @@ const Template = ({title, description, image, formType}) => {
                 </div>
             </div>
 
-            <div className='flexbox flex-col mt-8'>
+            <div className=' mx-auto flexbox flex-col mt-8 select-none'>
                 <h1 className='heading'>{title}</h1>
                 <p className='fadedText mb-10'>{description}</p>
                 {
