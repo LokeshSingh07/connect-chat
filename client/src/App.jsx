@@ -12,7 +12,7 @@ import Chats from './pages/Chats.jsx';
 
 
 function App() {
-  const [count, setCount] = useState(0)
+  console.log = () => {}
 
   return (
     <div className="App">

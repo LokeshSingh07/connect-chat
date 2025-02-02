@@ -1,6 +1,7 @@
 import dotenv from "dotenv";
 import { app } from "./app.js";
 import { connectDB } from "./config/db.js";
+import { logger } from "./utils/Logger.js";
 
 
 dotenv.config({
@@ -19,13 +20,13 @@ connectDB()
     })
 
     app.listen(PORT, ()=>{
-        console.log(`🔅 Server running on port ${PORT}\n`);
+        logger(`✅ Your server is up and running...`);
     })
 
     app.get("/", (req,res)=>{
         return res.status(200).json({
             success: true,
-            message: "Server is running"
+            message: "Your server is up and running..."
         });
     })
 })
