@@ -28,7 +28,12 @@ const signup = asyncHandler(async(req,res)=>{
         throw new ApiError(403, "User already exist, please login");
     }
 
-    const user = await User.create({ name, email, password })
+    const user = await User.create({ 
+        name, 
+        email, 
+        password,
+        pic: `https://avatar.iran.liara.run/username?username=${name}`
+    })
 
     return res
     .status(200)
