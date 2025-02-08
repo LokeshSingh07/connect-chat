@@ -8,7 +8,6 @@ import toast from "react-hot-toast";
 import "../common/common.css"
 import ProfileModal from '../common/ProfileModal';
 import SidebarDrawer from '../common/SidebarDrawer';
-import axios from 'axios';
 import Logo from "../../assets/logo.png"
 
 
@@ -17,46 +16,13 @@ import Logo from "../../assets/logo.png"
 
 const AppBar = () => {
     const { user } = ChatState(); 
-    const [ search, setSearch ] = useState("");
-    const [ searchResults, setSearchResults ] = useState([ ]);
-    const [ loading, setLoading ] = useState(false);
-    const [ loadingChat, setLoadingChat ] = useState();
     const [ isOpen, setIsOpen ] = useState(false);
     const [ isSideBarOpen, setIsSideBarOpen ] = useState(false);
     const [ dropdown, setDropdown ] = useState(false);
     const navigate = useNavigate();
-    const  accessToken  = localStorage.getItem("accessToken");
-    // console.log("accessToken : ", accessToken);
 
 
 
-    const handleSearch = async()=>{
-        if(!search){
-            toast.error("Please Enter something in search", {
-                position: "top-left"
-            })
-            return;
-        }
-
-        try{
-            setLoading(true);
-            const response = await axios.get(`${import.meta.env.VITE_BASE_URL}/api/v1/user/getAllUser?search=${search}`, {
-                headers: {
-                    Authorization: `Bearer ${accessToken}`
-                }
-            });
-            
-            console.log("users : ", response);
-        
-        }
-        catch(err){
-            toast.error("Something is wrong");
-            console.log(err);
-        }
-        finally{
-            setLoading(false);
-        }
-    }
 
     
     const logout = ()=>{
@@ -101,7 +67,7 @@ const AppBar = () => {
                 {/* Profile */}
                 <div className='relative'>
                     <div 
-                        className='flex justify-center items-center gap-2 hover:bg-[#e4f2fe] p-2 rounded-md'
+                        className='flex justify-center items-center gap-2 hover:bg-[#e4f2fe] p-2 rounded-md cursor-pointer'
                         onClick={()=>setDropdown(!dropdown)}
                     >
                         <img src={`https://avatar.iran.liara.run/username?username=${user?.name}`} className='w-[30px] object-cover rounded-full'/>
@@ -137,13 +103,7 @@ const AppBar = () => {
                         )
                     }
                 </div>
-
-
             </div>
-
-
-
-
         </div>
 
         {
@@ -158,8 +118,6 @@ const AppBar = () => {
             isSideBarOpen && 
             <SidebarDrawer 
                 setIsSideBarOpen={setIsSideBarOpen}
-                setSearch={setSearch} 
-                handleSearch={handleSearch}
             />
         }
         

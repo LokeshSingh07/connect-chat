@@ -9,3 +9,31 @@
     overflow-x: hidden;
 }
 
+
+/* For WebKit-based browsers (Chrome, Safari, Edge) */
+::-webkit-scrollbar {
+    width: 8px; 
+    height: 8px;
+    border-radius: 20px; /* Smooth rounded edges */
+  }
+  
+  ::-webkit-scrollbar-track {
+    background: #ffffff; /* White track */
+    border-radius: 20px;
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    background: #b9b9b9; /* Light gray scrollbar */
+    border-radius: 20px; /* Rounded scrollbar */
+  }
+  
+  ::-webkit-scrollbar-thumb:hover {
+    background: #a0a0a0; /* Slightly darker gray on hover */
+  }
+  
+  /* For Firefox */
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: #b9b9b9 #ffffff;
+  }
+  

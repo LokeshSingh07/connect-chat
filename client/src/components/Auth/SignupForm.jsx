@@ -46,10 +46,11 @@ const SignupForm = () => {
 
       // console.log(response.data);
       navigate("/");
-      toast.success("Account created");
+      toast.success(response.data.message);
     }
     catch(err){
       console.log(err);
+      toast.error(err.message);
     }
     setLoading(false);
   }
