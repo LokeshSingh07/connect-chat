@@ -59,7 +59,7 @@ const ChatBox = () => {
               <input 
                 type='text'
                 placeholder='Enter a message'
-                className='flex-1 py-2 px-4 text-md text-gray-400 border border-blue-100 bg-[#f2f9ff] rounded-lg'
+                className='flex-1 py-2 px-4 text-md font-medium text-gray-900 border border-blue-100 bg-[#f2f9ff] rounded-lg'
                 required  
               />
               <div className='w-8 h-8 flex justify-center items-center bg-blue-400 rounded-full hover:cursor-pointer hover:bg-blue-500 transition-all delay-100'>

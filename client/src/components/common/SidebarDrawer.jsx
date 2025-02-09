@@ -5,6 +5,7 @@ import ChatLoading from "../miscellaneous/ChatLoading";
 import UserListItem from "../core/Chats/UserListItem";
 import { ChatState } from "../../Context/ChatProvider";
 import toast from "react-hot-toast";
+import Loading from "./Loading";
 
 
 const SidebarDrawer = ({ setIsSideBarOpen }) => {
@@ -12,10 +13,10 @@ const SidebarDrawer = ({ setIsSideBarOpen }) => {
   const  accessToken  = localStorage.getItem("accessToken");
   
   const [ search, setSearch ] = useState("");
-  const [ searchResults, setSearchResults ] = useState([ ]);
+  const [ searchResults, setSearchResults ] = useState([]);
   const [ loading, setLoading ] = useState(false);
   const [ loadingChat, setLoadingChat ] = useState();
-  const { selectedChat, setSelectedChat, chats, setChats } = ChatState();
+  const { selectedChat, setSelectedChat, chats, setChats,user } = ChatState();
 
 
 
@@ -49,7 +50,7 @@ const SidebarDrawer = ({ setIsSideBarOpen }) => {
   }
 
 
-
+  // create and fetch one-to-one chat
   const accessChat = async(userId)=>{
     try{
       setLoadingChat(true);
@@ -63,11 +64,11 @@ const SidebarDrawer = ({ setIsSideBarOpen }) => {
       const { data } = await axios.post(`${import.meta.env.VITE_BASE_URL}/api/v1/chat`, {userId}, config);
       
       // catch
-      // if(!chats.find((c)=> c._id === data._id)){
-      //   setChats([data, ...chats]);
-      // }
+      if(!chats.find((c)=> c._id === data._id)){
+        setChats([data, ...chats]);
+      }
       setSelectedChat(data);
-      console.log("access chat : ", data);
+      // console.log("access chat : ", data);
     }
     catch(err){
       toast("Error fetching the chat, access chat");
@@ -93,7 +94,7 @@ const SidebarDrawer = ({ setIsSideBarOpen }) => {
   }, [setIsSideBarOpen]);
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex">
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex transition-all delay-2000">
       <div className="relative w-80 bg-white h-full shadow-xl p-6" ref={sidebarRef}>
         <h2 className="text-xl font-semibold mb-4">Search Users</h2>
         <button onClick={()=> setIsSideBarOpen(false)} className="absolute right-5 top-5 hover:bg-slate-200 rounded-md transition-all duration-30"><IoClose fontSize={24}/></button>
@@ -112,20 +113,23 @@ const SidebarDrawer = ({ setIsSideBarOpen }) => {
         </div>
 
         {
-          
           loading ? 
           <ChatLoading/> :
           (
-            searchResults?.map((ele)=>(
+            searchResults?.map((user)=>(
               <UserListItem
-                key={ele._id}
-                user={ele}
-                handleFunction={()=> accessChat(ele._id)}
+                key={user._id}
+                user={user}
+                handleFunction={()=> accessChat(user._id)}
               />
             ))
           )
-
         }
+
+        {
+          loadingChat && <Loading/>
+        }
+
 
       </div>
     </div>

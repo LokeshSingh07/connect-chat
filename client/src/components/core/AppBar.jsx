@@ -38,13 +38,13 @@ const AppBar = () => {
   return (
     <>
         <div className='flex justify-between items-center h-12 bg-[#f2f9ff] px-5'>
-            <div className='flexbox gap-2 cursor-pointer'>
+            <div className='flexbox gap-2 select-none'>
                 <img src={Logo}
                     alt='logo'
                     loading='lazy'
                     width={25}
                 />
-                <h2 className='text-[18px] font-semibold'>Connect</h2>
+                <h2 className='text-[16px] font-medium'>Connect</h2>
             </div>
 
             {/* <Tooltip label="search Users to chat"/> */}
@@ -62,7 +62,7 @@ const AppBar = () => {
             </div>
 
             <div className='flex justify-center items-center gap-x-2'>
-                <GoBell className='hidden md:block text-[24px] hover:text-[25px]  transition-all duration-200'/>
+                <GoBell className='hidden md:block text-[24px] hover:text-[25px] cursor-pointer transition-all duration-200'/>
 
                 {/* Profile */}
                 <div className='relative'>
@@ -95,7 +95,7 @@ const AppBar = () => {
                                         setDropdown(false)
                                         logout()
                                     }}
-                                    className='px-4 py-2 rounded-md hover:bg-[#e4f2fe] text-red-600 hover:text-red-700 hover:font-semibold transition-all duration-200'
+                                    className='px-4 py-2 rounded-md hover:bg-[#e4f2fe] text-red-600 hover:text-red-700 hover:font-semibold cursor-pointer transition-all duration-200'
                                 >
                                     Logout
                                 </div>
