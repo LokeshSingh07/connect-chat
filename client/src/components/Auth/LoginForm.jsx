@@ -4,11 +4,14 @@ import { FaEye, FaEyeSlash, FaSpinner } from "react-icons/fa";
 import axios from 'axios';
 import { useNavigate } from "react-router-dom"
 import toast from "react-hot-toast";
+import { ChatState } from '../../Context/ChatProvider';
 
 
 
 
 const LoginForm = () => {
+  const {setUser} = ChatState();
+
   const [formData, setFormData] = useState({
     email: '',
     password: ''
@@ -42,7 +45,8 @@ const LoginForm = () => {
       // console.log(response.data.data);
       localStorage.setItem('accessToken', response.data.data.accessToken);
       localStorage.setItem('user', JSON.stringify(response.data.data.user));
-      navigate('/home');
+      setUser(response.data.data.user)
+      navigate('/chats');
       toast.success("Logged in")
     }
     catch(err){

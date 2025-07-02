@@ -1,6 +1,3 @@
-import React from 'react'
-import { ChatState } from '../../../Context/ChatProvider'
-
 
 
 function UserListItem({handleFunction, user}) {

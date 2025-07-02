@@ -81,7 +81,7 @@ const fetchChats = asyncHandler(async(req,res)=> {
     })
     .populate("users", "name email pic")
     .populate("latestMessage")
-    .sort({updatedAt: 1})
+    .sort({updatedAt: -1})
     .exec();
 
     return res.status(200)
@@ -105,12 +105,13 @@ const createGroupChat = asyncHandler(async(req,res)=> {
     }
 
     // we can't send array directly, we need to send it in the stringyfy format
-    const usersIds = JSON.parse(users);
+    let usersIds = JSON.parse(users);
     if(usersIds.length < 2){
         throw new ApiError(403, "Minimum 2 users are required to create a group chat");
     }
 
     usersIds.push(req.user._id);
+    usersIds = [...new Set(usersIds.map(String))];
 
     const chatData = await Chat.create({
         chatName,
@@ -172,7 +173,7 @@ const addToGroup = asyncHandler(async(req,res)=>{
     const chatData = await Chat.findByIdAndUpdate(
         chatId,
         {
-            $push: {
+            $addToSet: {
                 users: userId
             }
         },
@@ -181,6 +182,10 @@ const addToGroup = asyncHandler(async(req,res)=>{
     .populate("users", "name email pic")
     .populate("latestMessage")
     .exec();
+
+    if (!chatData) {
+        throw new ApiError(404, "Chat not found");
+    }
 
     return res
     .status(200)
@@ -200,6 +205,8 @@ const addToGroup = asyncHandler(async(req,res)=>{
 const removeFromGroup = asyncHandler(async(req,res)=> {
     const { chatId, userId } = req.body;
     
+    console.log("deatsils BE : ", chatId, userId);
+
     if(!chatId || !userId){
         throw new ApiError(403, "All fields are required");
     }
@@ -216,6 +223,10 @@ const removeFromGroup = asyncHandler(async(req,res)=> {
     .populate("users", "name email pic")
     .populate("latestMessage")
     .exec();
+
+    if (!chatData) {
+            throw new ApiError(404, "Chat not found");
+    }
 
 
     return res

@@ -12,7 +12,7 @@ import Chats from './pages/Chats.jsx';
 
 
 function App() {
-  console.log = () => {}
+  // console.log = () => {}
 
   return (
     <div className="App">
@@ -45,9 +45,7 @@ function App() {
         <Route
           path="/home"
           element={
-            <SecuredRoute>
               <Home/>
-            </SecuredRoute>  
           }
         />
 

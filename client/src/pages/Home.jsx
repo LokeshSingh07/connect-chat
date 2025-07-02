@@ -2,43 +2,24 @@ import React, { useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
 import "../App.css"
 import toast from 'react-hot-toast';
+import { LandingPage } from '../components/core/Home/LandingPage';
+import Footer from '../components/core/Home/Footer';
+import CTASection from '../components/core/Home/CTA';
+import AppBar from '../components/core/AppBar';
 
 
 
 
 const Home = () => {
-  const navigate = useNavigate();
-
-  useEffect(()=>{
-      const user = JSON.parse(localStorage.getItem("user"));
-  
-      if(user){
-        navigate("/chats");
-      }
-    }, []);
-  
-
-  const logout = ()=>{
-    localStorage.removeItem('accessToken')
-    navigate('/');
-    toast.success("logged out")
-  }
 
 
   return (
     <div>
-      
-      <div className='w-[200px]'>
-        <button onClick={logout} className='inputField bg-red-400 font-medium'>
-          logout
-        </button>
-      </div>
+      <AppBar/>
+      <LandingPage/>
 
-
-
-
-
-
+      <CTASection/>
+      <Footer/>
 
     </div>
   )

@@ -13,7 +13,7 @@ router.route("/").get(verifyJWT, fetchChats);
 router.route("/createGroup").post(verifyJWT, createGroupChat);
 router.route("/renameGroup").patch(verifyJWT, renameGroup);
 router.route("/addToGroup").patch(verifyJWT, addToGroup);
-router.route("/removeFromGroup").delete(verifyJWT, removeFromGroup);
+router.route("/removeFromGroup").patch(verifyJWT, removeFromGroup);
 
 
 

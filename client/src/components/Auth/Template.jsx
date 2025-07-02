@@ -4,7 +4,7 @@ import Logo from "../../assets/logo.png"
 import { Link } from 'react-router-dom';
 import SignupForm from "./SignupForm";
 import LoginForm from "./LoginForm";
-
+import { MessageCircle, Sparkles } from 'lucide-react';
 
 
 
@@ -15,14 +15,26 @@ const Template = ({title, description, image, formType}) => {
         {/* leftbox */}
         <div className={`w-full lg:w-[60%] ${formType =='login' ? "slideInFromLeft" : "slideInFromRight"}`}>
             <div className='flexbox justify-between m-7'>
-                <div className='flexbox gap-2 cursor-pointer'>
+                {/* <div className='flexbox gap-2 cursor-pointer'>
                     <img src={Logo}
                         alt='logo'
                         loading='lazy'
                         width={25}
                     />
                     <h2 className='text-[18px] font-semibold'>Connect</h2>
-                </div>
+                </div> */}
+
+                {/* Logo Section */}
+                <Link to={'/home'} className="flex items-center animate-slide-in-left">
+                    <div className="relative">
+                        <MessageCircle className="h-8 w-8 text-green-500 animate-pulse" />
+                        <Sparkles className="h-4 w-4 text-green-500 absolute -top-1 -right-1 animate-bounce" />
+                    </div>
+                    <span className="ml-2 text-xl font-bold text-gray-800 bg-gradient-to-r from-green-400 to-emerald-600 bg-clip-text text-transparent">
+                        Connect
+                    </span>
+                </Link>
+
                 <div className='flexbox gap-2 text-[14px] select-none'>
                     <p>
                         {

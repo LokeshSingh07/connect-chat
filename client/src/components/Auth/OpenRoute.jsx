@@ -10,7 +10,7 @@ const OpenRoute = ({children}) => {
         return children;
     }
     else{
-        return <Navigate to="/home"/>        // TODO
+        return <Navigate to="/chats"/>        // TODO
     }
 }
 
