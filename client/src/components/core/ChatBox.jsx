@@ -19,12 +19,10 @@ import { formatDateLabel } from '../../utils/formatDate';
 
 
 
-
-
-
-const ENDPOINT = "http://localhost:4000";
+const ENDPOINT = import.meta.env.VITE_BASE_URL;
 export var socket, selectedChatCompare; 
 const MESSAGES_PER_PAGE = 50;
+
 
 
 const ChatBox = () => {
