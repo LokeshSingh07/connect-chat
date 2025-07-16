@@ -38,7 +38,7 @@ connectDB()
     const io = new Server(server, {
         pingTimeout: 60 * 1000,     // wait for 
         cors: {
-            origin: "*",
+            origin: process.env.CORS_ORIGIN,
             methods: ["GET", "POST"]
         }
     })
