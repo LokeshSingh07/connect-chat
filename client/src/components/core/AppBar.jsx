@@ -10,21 +10,22 @@ import ProfileModal from '../common/ProfileModal';
 import SidebarDrawer from '../common/SidebarDrawer';
 import Logo from "../../assets/logo.png"
 import { MessageCircle, Sparkles } from 'lucide-react';
+import { getSender } from '../../utils/chatLogic';
 
 
 
 
 const AppBar = () => {
-    const { user, resetChatContext } = ChatState(); 
+    const { user, resetChatContext, notification, setNotification } = ChatState(); 
     const [ isOpen, setIsOpen ] = useState(false);
     const [ isSideBarOpen, setIsSideBarOpen ] = useState(false);
     const [ dropdown, setDropdown ] = useState(false);
+    // const [ notificationDropdown, setNotificationDropdown] = useState(false);
     const navigate = useNavigate();
     
     const location = useLocation();
     const isHome = location.pathname === '/home';
   
-
 
 
     
@@ -81,17 +82,50 @@ const AppBar = () => {
                     Click to search user
                 </div>
             </div>
-
+            
             <div className='flex justify-center items-center gap-x-2'>
-                <GoBell className='hidden md:block text-[24px] hover:text-[25px] cursor-pointer transition-all duration-200'/>
+                {/* 
+                <div className='relative'>
+                    <div onClick={()=>setNotificationDropdown(prev => !prev)}>
+                        <GoBell className='hidden md:block text-[24px] hover:text-[25px] cursor-pointer transition-all duration-200'/>
+                         {notification.length > 0 && (
+                            <span className="absolute top-0 right-0 bg-red-500 text-white text-xs px-[4px] flex items-center justify-center rounded-full">
+                            {notification.length > 9  ? "9+" : notification.length}
+                            </span>
+                        )}
+                    </div>
+                    {
+                        notificationDropdown && (<div onClick={(e)=> e.stopPropagation()}
+                            className='w-[250px] text-center absolute grid-cols-1 space-y-2 top-10 right-0 z-[1000] bg-[#f2f9ff] py-2 px-1 rounded-md'
+                        >
+                            {
+                                notification.length == 0 ? "No new messages" : 
+                                (<div>
+                                    {
+                                        notification.map((noti)=> (
+                                            <div key={noti._id} className='bg-slate-200 rounded-md'>
+                                                {
+                                                    noti?.chat?.isGroupChat ? `New message in ${noti?.chat?.chatName}` : `New message from ${getSender(noti?.chat, user._id)}`
+                                                }
+                                            </div>
+                                        ))
+                                    }
+                                </div>)
+                            }
+                        </div>)
+                    }
 
+                </div>
+                */}
+                
+                
                 {/* Profile */}
                 <div className='relative'>
                     <div 
                         className='flex justify-center items-center gap-2 w-fit h-fit rounded-md bg-slate-100 hover:bg-[#e4f2fe] p-2 cursor-pointer'
                         onClick={()=>setDropdown(!dropdown)}
                     >
-                        <img src={`https://avatar.iran.liara.run/username?username=${user?.name}`} className='w-[30px] h-[30px] bg-slate-300 object-cover rounded-full'/>
+                        <img src={`https://ui-avatars.com/api/?name=${user?.name}`} className='w-[30px] h-[30px] bg-slate-300 object-cover rounded-full'/>
                         <FaChevronDown fontSize={10} className={`hidden md:block transition-transform delay-100 ${dropdown && "rotate-180"}`}/>
                     </div>
 

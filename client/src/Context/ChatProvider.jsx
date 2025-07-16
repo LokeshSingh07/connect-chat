@@ -13,6 +13,7 @@ const ChatProvider = ({children})=>{
     const [selectedChat, setSelectedChat] = useState();
     const [chats, setChats] = useState([]);             // all chats (left side)
     const [chatUpdateTrigger, setChatUpdateTrigger] = useState(false);
+    const [notification, setNotification] = useState([])
 
 
     useEffect(()=>{
@@ -29,6 +30,7 @@ const ChatProvider = ({children})=>{
         setSelectedChat(null);
         setChats([]);
         setChatUpdateTrigger(false);
+        setNotification([])
     };
 
 
@@ -43,7 +45,9 @@ const ChatProvider = ({children})=>{
             setChats,
             chatUpdateTrigger,
             setChatUpdateTrigger,
-            resetChatContext
+            resetChatContext,
+            notification, 
+            setNotification
         }}>
             {children}
         </ChatContext.Provider>

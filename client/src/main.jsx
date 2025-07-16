@@ -10,12 +10,12 @@ import ChatProvider from './Context/ChatProvider.jsx';
 
 
 ReactDOM.createRoot(document.getElementById('root')).render(
-  <React.StrictMode>
+  <>
     <BrowserRouter>
       <ChatProvider>
         <App />
         <Toaster/>
       </ChatProvider>
     </BrowserRouter>
-  </React.StrictMode>,
+  </>,
 )

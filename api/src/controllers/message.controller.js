@@ -54,15 +54,24 @@ const sendMessage = asyncHandler(async(req,res)=>{
 
 const allMessage = asyncHandler(async(req,res)=>{
     const {chatId} = req.params;
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 20;
+    const skip = (page - 1) * limit;
+
 
     if(!chatId){
         throw new ApiError(403, "chatId is required")
     }
 
     const allMsgData = await Message.find({chat: chatId})
+    .sort({createdAt: -1})
+    .skip(skip)
+    .limit(limit)
     .populate("sender", "name email pic")
     // .populate("chat")
     .exec();
+
+    
 
     return res.status(200).json(
         new ApiResponse(

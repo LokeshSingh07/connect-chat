@@ -32,7 +32,7 @@ const signup = asyncHandler(async(req,res)=>{
         name, 
         email, 
         password,
-        pic: `https://avatar.iran.liara.run/username?username=${name}`
+        pic: `https://ui-avatars.com/api/?name=${name}`
     })
 
     return res

@@ -23,7 +23,7 @@ function GroupChatModal({setIsOpen, selectedChat = null, isCreatingGroupChat = f
     
     const isEditMode = user?._id == selectedChat?.groupAdmin;
 
-    console.log("selectedChat : ", selectedChat)
+    // console.log("selectedChat in GroupChat : ", selectedChat)
     // console.log("userid : ", user)
     // edit
     useEffect(() => {
@@ -74,10 +74,10 @@ function GroupChatModal({setIsOpen, selectedChat = null, isCreatingGroupChat = f
     },[search])
 
 
-    // add member to the group
+    // add member to the group handler
     const handleAddToGroup = async(userToAdd)=>{
         if(selectedUser.some((u)=> (u._id === userToAdd._id))){
-            toast.error("user already added")
+            toast.error("user already in the group")
             return
         }
         
@@ -103,9 +103,13 @@ function GroupChatModal({setIsOpen, selectedChat = null, isCreatingGroupChat = f
                     },
                     config
                 );
-                console.log("data : ", data);
+          
+                // console.log("data : ", data);
+
+                // Inform ChatBox to refetch chats
+                setChatUpdateTrigger(prev => !prev);
+          
                 toast.success("Added to the group")
-    
             }
             catch(err){
                 toast.error("Something is wrong");
@@ -117,10 +121,13 @@ function GroupChatModal({setIsOpen, selectedChat = null, isCreatingGroupChat = f
         }
     }
 
-    // remove member from the group
-    const handleDelete = async(userToRemove) => {
+    // remove member from the group hndler
+    const handleRemove = async(userToRemove) => {
         if(!isEditMode) return;
-
+        if(selectedChat.groupAdmin != user._id && userToRemove._id != user._id){
+            toast.error("Only admin can remove someone");
+            return;
+        }
 
         const idToRemove = userToRemove._id;
         setSelectedUser((prevUsers) =>
@@ -144,10 +151,20 @@ function GroupChatModal({setIsOpen, selectedChat = null, isCreatingGroupChat = f
                     },
                     config
                 );
-                console.log("data : ", data);
+                // console.log("data : ", data);
+
+                // if admin remove himeself or leave the group
+                if(user._id === idToRemove){
+                    setSelectedChat();
+                    setIsOpen(false);
+
+                    // TODO: make other person as admin
                 
+                }
+
+                // Inform ChatBox to refetch chats
+                setChatUpdateTrigger(prev => !prev);
                 toast.success("Remove from the group")
-    
             }
             catch(err){
                 toast.error("Something is wrong");
@@ -159,14 +176,48 @@ function GroupChatModal({setIsOpen, selectedChat = null, isCreatingGroupChat = f
         }
     };
 
-
+    // checking if group name updated handler 
     const isUpdateNeeded = () => {
         if (groupChatName !== originalGroupName) return true;
         return false;
     };
 
+    // rename group hanler
+    const handleRename = async()=>{
+        // if(isCreatingGroupChat || !isEditMode || !selectedChat) return;
+
+        const config = { headers: { Authorization: `Bearer ${accessToken}` } };
+        try{
+            // 🔄 Update existing group name
+            const { data } = await axios.patch(`${import.meta.env.VITE_BASE_URL}/api/v1/chat/renameGroup`,
+                {
+                    chatId: selectedChat._id,
+                    chatName: groupChatName,
+                },
+                config
+            );
+            
+            setChats([data, ...chats])          // bcz we want it to the top
+            setIsOpen(false);
+            setSelectedChat({
+                ...selectedChat,
+                chatName: data?.data?.chatName
+            })
+
+            // ✅ Inform ChatBox to refetch chats
+            setChatUpdateTrigger(prev => !prev);
+                
+            toast.success("Group renamed successfully");
+            
+        }
+        catch(err){
+            toast.error("Something is wrong");
+            console.log(err);
+        }
+    }
 
 
+    // create new Group chat handler
     const handleSubmit = async()=>{
         if(!groupChatName ||  selectedUser.length == 0){
             toast.error("All fields are required");
@@ -181,43 +232,20 @@ function GroupChatModal({setIsOpen, selectedChat = null, isCreatingGroupChat = f
         const config = { headers: { Authorization: `Bearer ${accessToken}` } }    
         
         try{
-            if(!isCreatingGroupChat && isEditMode && selectedChat){
-                // 🔄 Update existing group name
-                const { data } = await axios.patch(`${import.meta.env.VITE_BASE_URL}/api/v1/chat/renameGroup`,
-                    {
-                        chatId: selectedChat._id,
-                        chatName: groupChatName,
-                    },
-                    config
-                );
+            const { data } = await axios.post(`${import.meta.env.VITE_BASE_URL}/api/v1/chat/createGroup`, {
+                chatName: groupChatName,
+                users: JSON.stringify(selectedUser.map(u => u._id))
+            }, config)
                 
-                setChats([data, ...chats])          // bcz we want it to the top
-                setIsOpen(false);
-                setSelectedChat({
-                    ...selectedChat,
-                    chatName: data?.data?.chatName
-                })
+            // setChats([...chats, data])       //
+            setChats([data, ...chats])          // bcz we want it to the top
+            setIsOpen(false);
 
-                // ✅ Inform ChatBox to refetch chats
-                setChatUpdateTrigger(prev => !prev);
-                
-                toast.success("Group updated successfully");
-            }
-            else{
-                const { data } = await axios.post(`${import.meta.env.VITE_BASE_URL}/api/v1/chat/createGroup`, {
-                    chatName: groupChatName,
-                    users: JSON.stringify(selectedUser.map(u => u._id))
-                }, config)
-                
-                // setChats([...chats, data])       //
-                setChats([data, ...chats])          // bcz we want it to the top
-                setIsOpen(false);
+            // ✅ Inform ChatBox to refetch chats
+            setChatUpdateTrigger(prev => !prev);
 
-                // ✅ Inform ChatBox to refetch chats
-                setChatUpdateTrigger(prev => !prev);
-
-                toast.success("New Group chat created");
-            }
+            toast.success("New Group chat created");
+            
         }
         catch(err){
             toast.error("Something is wrong");
@@ -227,7 +255,7 @@ function GroupChatModal({setIsOpen, selectedChat = null, isCreatingGroupChat = f
 
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-20">
         <div className="flex flex-col items-center justify-center  bg-white p-6 rounded-2xl shadow-xl min-w-80 md:w-96">
             <div className='w-full flex justify-between items-center mb-4'>
                 <h2 className="text-xl font-semibold select-none">
@@ -243,7 +271,7 @@ function GroupChatModal({setIsOpen, selectedChat = null, isCreatingGroupChat = f
                 <div className='flex gap-2'>
                     <div className="relative w-full">
                         <input
-                            disabled={!isEditMode}
+                            disabled={!isCreatingGroupChat && !isEditMode}
                             type="text" 
                             placeholder="Group chat name"
                             value={groupChatName}
@@ -257,7 +285,7 @@ function GroupChatModal({setIsOpen, selectedChat = null, isCreatingGroupChat = f
                     {!isCreatingGroupChat && isEditMode &&
                     (<button
                         disabled={!isUpdateNeeded()}
-                        onClick={handleSubmit}
+                        onClick={handleRename}
                         className={`px-4 py-2 rounded-lg text-white select-none transition 
                         ${!isUpdateNeeded()
                             ? "bg-gray-400 cursor-not-allowed" 
@@ -278,7 +306,7 @@ function GroupChatModal({setIsOpen, selectedChat = null, isCreatingGroupChat = f
                                 key={user._id} 
                                 user={user} 
                                 groupAdminId={selectedChat?.groupAdmin}
-                                handleDelete={()=> handleDelete(user)}
+                                handleRemove={()=> handleRemove(user)}
                                 isCreatingGroupChat={isCreatingGroupChat}
                             />
                         ))
@@ -332,7 +360,7 @@ function GroupChatModal({setIsOpen, selectedChat = null, isCreatingGroupChat = f
                 {
                     !isCreatingGroupChat && isEditMode && 
                     <button
-                        onClick={()=> { }}
+                        onClick={()=> { handleRemove(user) }}
                         className='px-4 py-2 rounded-lg text-white select-none transition bg-red-500 hover:bg-red-600'
                     >
                         Leave Group
