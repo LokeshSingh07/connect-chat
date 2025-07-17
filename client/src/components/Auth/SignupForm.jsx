@@ -42,7 +42,7 @@ const SignupForm = () => {
     
     setLoading(true);
     try{
-      const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/api/v1/user/signup`, formData);
+      const response = await axios.post(`/api/v1/user/signup`, formData);
 
       // console.log(response.data);
       navigate("/");

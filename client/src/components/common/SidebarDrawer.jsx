@@ -31,7 +31,7 @@ const SidebarDrawer = ({ setIsSideBarOpen }) => {
 
     try{
         setLoading(true);
-        const response = await axios.get(`${import.meta.env.VITE_BASE_URL}/api/v1/user/getAllUser?search=${search}`, {
+        const response = await axios.get(`/api/v1/user/getAllUser?search=${search}`, {
             headers: {
                 Authorization: `Bearer ${accessToken}`
             }
@@ -62,7 +62,7 @@ const SidebarDrawer = ({ setIsSideBarOpen }) => {
         }
       }
       
-      const { data } = await axios.post(`${import.meta.env.VITE_BASE_URL}/api/v1/chat`, {userId}, config);
+      const { data } = await axios.post(`/api/v1/chat`, {userId}, config);
       
       // catch
       if(!chats.find((c)=> c._id === data._id)){

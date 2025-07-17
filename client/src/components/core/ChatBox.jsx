@@ -145,7 +145,7 @@ const ChatBox = () => {
     setLoading(true);
 
     try{
-      const { data } = await axios.get(`${import.meta.env.VITE_BASE_URL}/api/v1/message/${selectedChat._id}?page=${pageNum}&limit=${MESSAGES_PER_PAGE}`, config
+      const { data } = await axios.get(`/api/v1/message/${selectedChat._id}?page=${pageNum}&limit=${MESSAGES_PER_PAGE}`, config
       );
 
       
@@ -194,7 +194,7 @@ const ChatBox = () => {
     setNewMessage("");
 
     try{
-      const { data } = await axios.post(`${import.meta.env.VITE_BASE_URL}/api/v1/message/`,
+      const { data } = await axios.post(`/api/v1/message/`,
         {
           chatId: selectedChat._id,
           content: newMessage,

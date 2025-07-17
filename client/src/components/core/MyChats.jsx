@@ -25,7 +25,7 @@ const MyChats = () => {
         }
       }
       
-      const response = await axios.get(`${import.meta.env.VITE_BASE_URL}/api/v1/chat`, config);
+      const response = await axios.get(`/api/v1/chat`, config);
       setChats(response.data.data);
 
       // console.log("fetch chat : ", response?.data?.data);
