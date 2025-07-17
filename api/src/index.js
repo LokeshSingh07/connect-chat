@@ -3,6 +3,9 @@ import { app } from "./app.js";
 import { connectDB } from "./config/db.js";
 import { logger } from "./utils/Logger.js";
 import { Server } from 'socket.io'
+import path from "path";
+import express from "express";
+import fs from "fs";
 
 dotenv.config({
     path: './env'
@@ -15,7 +18,7 @@ const PORT = process.env.PORT || 4000;
 connectDB()
 .then(()=>{
     app.on("error", (err)=>{
-        console.log("Server error: ", error.message);
+        console.log("Server error: ", err.message);
         throw err;
     })
 
@@ -23,18 +26,39 @@ connectDB()
         logger(`✅ Your server is up and running on PORT ${PORT}`);
     })
 
-    // check server-health
-    app.get("/", (req,res)=>{
-        return res.status(200).json({
-            success: true,
-            message: "Your server is up and running..."
-        });
-    })
+
+
+    // ======================== Static Frontend ========================
+    const __dirname1 = path.resolve();
+    const clientBuildPath = path.join(__dirname1, "/client/dist");
+
+    if(process.env.NODE_ENV === "production"){
+        if(fs.existsSync(clientBuildPath)){
+            app.use(express.static(clientBuildPath));
+            
+            app.get("*", (req, res) => {
+                res.sendFile(path.join(clientBuildPath, "index.html"));
+            });
+        }
+        else{
+            console.warn("⚠️ client/build not found. Skipping static file serving.");
+        }
+    }
+    else{
+        // check server-health
+        app.get("/", (req,res)=>{
+            return res.status(200).json({
+                success: true,
+                message: "Your server is up and running..."
+            });
+        })
+    }
 
 
 
 
-    // =================== SOCKET =================== 
+
+    // ======================== SOCKET.IO Setup ========================
     const io = new Server(server, {
         pingTimeout: 60 * 1000,     // wait for 
         cors: {
@@ -50,6 +74,7 @@ connectDB()
         // console.log("🧠 User info:", socket.user);
 
 
+        // Join user-specific private room
         socket.on('setup', (userData)=>{
             socket.join(userData._id)
 
@@ -58,6 +83,7 @@ connectDB()
         })
         
 
+        // New message received
         socket.on('new message', (newMsgReceived)=>{
             var chat = newMsgReceived.chat;
             
@@ -72,13 +98,16 @@ connectDB()
             })
         })
 
-
+        
+        
+        // Join a group/chat room
         socket.on('join chat', (room)=>{
             socket.join(room);
             console.log("👥 User joined chat room:", room);
         })
 
-
+        
+        // Typing events
         socket.on('typing', ({room, user})=>{
             socket.to(room).emit("typing", {chatRoom:room, sender: user});
         })
@@ -88,6 +117,7 @@ connectDB()
         })
 
 
+        // disconnect
         socket.off('setup', (userData)=>{
             console.log("Disconnected");
             socket.leave(userData._id);
