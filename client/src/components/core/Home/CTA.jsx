@@ -52,12 +52,12 @@ const CTASection = () => {
                 <Link
                   key={index}
                   to={link}
-                  className={`text-lg px-8 py-4 rounded-xl transition-all duration-300 transform hover:scale-105 ${className}`}
+                  className={`text-lg px-8 py-4 flex items-center justify-center rounded-xl transition-all duration-300 transform hover:scale-105 ${className}`}
                 >
-                  <span className="flex items-center gap-2">
+                  <div className="flex items-center gap-2">
                     {icon}
                     {label}
-                  </span>
+                  </div>
                 </Link>
               ))}
             </div>

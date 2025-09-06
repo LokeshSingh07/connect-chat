@@ -42,7 +42,7 @@ const SignupForm = () => {
     
     setLoading(true);
     try{
-      const response = await axios.post(`/api/v1/user/signup`, formData);
+      const response = await axios.post(`http://localhost:4000/api/v1/user/signup`, formData);
 
       // console.log(response.data);
       navigate("/");
@@ -50,7 +50,7 @@ const SignupForm = () => {
     }
     catch(err){
       console.log(err);
-      toast.error(err.message);
+      toast.error(err.response.data.data);
     }
     setLoading(false);
   }

@@ -25,7 +25,7 @@ const MyChats = () => {
         }
       }
       
-      const response = await axios.get(`/api/v1/chat`, config);
+      const response = await axios.get(`http://localhost:4000/api/v1/chat`, config);
       setChats(response.data.data);
 
       // console.log("fetch chat : ", response?.data?.data);

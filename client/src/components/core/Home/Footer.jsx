@@ -50,7 +50,7 @@ export default function Footer() {
 
         {/* Bottom Footer */}
         <div className="border-t border-gray-200 mt-8 pt-8 text-center text-gray-500 animate-fade-in">
-          <p>&copy; 2024 Connect. All rights reserved.</p>
+          <p>&copy; 2025 Connect. All rights reserved.</p>
         </div>
       </div>
     </footer>

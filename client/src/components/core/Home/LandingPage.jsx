@@ -30,12 +30,12 @@ export const LandingPage = () => {
         <div className="flex justify-center gap-4">
           <Link 
             to={'/'}
-            className="bg-green-500 hover:bg-green-600 text-white px-6 py-3 rounded-lg shadow-lg text-lg flex items-center gap-2 transition-all duration-200"
+            className="bg-green-500 hover:bg-green-600 text-white px-4 sm:px-6 py-3 rounded-lg shadow-lg text-md flex items-center gap-2 transition-all duration-200"
           >
             <Sparkles className="w-5 h-5" />
             Start Chatting Now
           </Link>
-          <button className="text-green-600 font-medium border border-green-400 px-6 py-3 rounded-lg backdrop-blur-md bg-white/50 shadow-sm hover:scale-105 transition-transform">
+          <button className="text-green-600 text-md font-medium border border-green-400 px-4 sm:px-6 py-3 rounded-lg backdrop-blur-md bg-white/50 shadow-sm hover:scale-105 transition-transform">
             Watch Demo
           </button>
         </div>
@@ -60,9 +60,6 @@ export const LandingPage = () => {
       {/* Floating Icons */}
       <div className="absolute top-24 right-1/4 animate-float">
         <MessageCircle className="h-8 w-8 text-green-300" />
-      </div>
-      <div className="absolute bottom-24 left-1/3 animate-float">
-        <Users className="h-6 w-6 text-green-200" />
       </div>
     </section>
   )

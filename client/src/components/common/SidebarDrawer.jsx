@@ -17,7 +17,7 @@ const SidebarDrawer = ({ setIsSideBarOpen }) => {
   const [ searchResults, setSearchResults ] = useState([]);
   const [ loading, setLoading ] = useState(false);
   const [ loadingChat, setLoadingChat ] = useState(false);
-  const { selectedChat, setSelectedChat, chats, setChats, user } = ChatState();
+  const { selectedChat, setSelectedChat, chats, setChats, user,setChatUpdateTrigger } = ChatState();
 
 
 
@@ -31,13 +31,13 @@ const SidebarDrawer = ({ setIsSideBarOpen }) => {
 
     try{
         setLoading(true);
-        const response = await axios.get(`/api/v1/user/getAllUser?search=${search}`, {
+        const response = await axios.get(`http://localhost:4000/api/v1/user/getAllUser?search=${search}`, {
             headers: {
                 Authorization: `Bearer ${accessToken}`
             }
         });
         
-        console.log("users : ", response.data.data.users);
+        // console.log("users : ", response.data.data.users);
         setSearchResults(response.data.data.users);
     
     }
@@ -62,14 +62,18 @@ const SidebarDrawer = ({ setIsSideBarOpen }) => {
         }
       }
       
-      const { data } = await axios.post(`/api/v1/chat`, {userId}, config);
+      const { data } = await axios.post(`http://localhost:4000/api/v1/chat`, {userId}, config);
       
       // catch
-      if(!chats.find((c)=> c._id === data._id)){
+      const chat = data.data;
+      console.log("Fetched Chat: ", chat._id);
+
+      if(!chats.find((c)=> c._id === chat)){
         setChats([data, ...chats] || []);
+        setChatUpdateTrigger(prev=> !prev)
       }
-      setSelectedChat(data);
-      // console.log("access chat : ", selectedChat);
+      setSelectedChat(chat);
+      console.log("access chat : ", chat);
     }
     catch(err){
       toast.error("Error fetching the chat, please try again.");

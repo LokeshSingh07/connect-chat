@@ -11,7 +11,7 @@ const Template = ({title, description, image, formType}) => {
   return (
     <div className={`min-h-screen flex ${formType == "login" ? "flex-row" : "flex-row-reverse"} blurBgImg`}>
         {/* leftbox */}
-        <div className={`w-full lg:w-[60%] ${formType =='login' ? "slideInFromLeft" : "slideInFromRight"}`}>
+        <div className={`w-full h-full lg:w-[60%] ${formType =='login' ? "slideInFromLeft" : "slideInFromRight"}`}>
             <div className='flexbox justify-between m-7'>
                 {/* <div className='flexbox gap-2 cursor-pointer'>
                     <img src={Logo}
@@ -47,7 +47,7 @@ const Template = ({title, description, image, formType}) => {
                 </div>
             </div>
 
-            <div className=' mx-auto flexbox flex-col mt-8 select-none'>
+            <div className='min-h-[500px] mx-auto flexbox flex-col mt-8 select-none'>
                 <h1 className='heading'>{title}</h1>
                 <p className='fadedText mb-10'>{description}</p>
                 {
