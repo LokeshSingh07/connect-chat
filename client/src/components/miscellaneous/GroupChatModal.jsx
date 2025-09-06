@@ -45,7 +45,7 @@ function GroupChatModal({setIsOpen, selectedChat = null, isCreatingGroupChat = f
             setLoading(true);
             const config = {headers: {Authorization: `Bearer ${accessToken}`}}
 
-            const { data } = await axios.get(`http://localhost:4000/api/v1/user/getAllUser?search=${query}`, config)
+            const { data } = await axios.get(`/api/v1/user/getAllUser?search=${query}`, config)
             console.log("data : ", data);
             setSearchResults(data.data.users);
 
@@ -96,7 +96,7 @@ function GroupChatModal({setIsOpen, selectedChat = null, isCreatingGroupChat = f
                 setLoading(true);
                 const config = { headers: { Authorization: `Bearer ${accessToken}` }}
     
-                const { data } = await axios.patch(`http://localhost:4000/api/v1/chat/addToGroup`,
+                const { data } = await axios.patch(`/api/v1/chat/addToGroup`,
                     {
                         chatId: selectedChat._id,
                         userId: userToAdd._id,
@@ -144,7 +144,7 @@ function GroupChatModal({setIsOpen, selectedChat = null, isCreatingGroupChat = f
                 setLoading(true);
                 const config = { headers: { Authorization: `Bearer ${accessToken}` }}
     
-                const { data } = await axios.patch(`http://localhost:4000/api/v1/chat/removeFromGroup`,
+                const { data } = await axios.patch(`/api/v1/chat/removeFromGroup`,
                     {
                         chatId: selectedChat._id,
                         userId: userToRemove._id,
@@ -189,7 +189,7 @@ function GroupChatModal({setIsOpen, selectedChat = null, isCreatingGroupChat = f
         const config = { headers: { Authorization: `Bearer ${accessToken}` } };
         try{
             // 🔄 Update existing group name
-            const { data } = await axios.patch(`http://localhost:4000/api/v1/chat/renameGroup`,
+            const { data } = await axios.patch(`/api/v1/chat/renameGroup`,
                 {
                     chatId: selectedChat._id,
                     chatName: groupChatName,
@@ -232,7 +232,7 @@ function GroupChatModal({setIsOpen, selectedChat = null, isCreatingGroupChat = f
         const config = { headers: { Authorization: `Bearer ${accessToken}` } }    
         
         try{
-            const { data } = await axios.post(`http://localhost:4000/api/v1/chat/createGroup`, {
+            const { data } = await axios.post(`/api/v1/chat/createGroup`, {
                 chatName: groupChatName,
                 users: JSON.stringify(selectedUser.map(u => u._id))
             }, config)

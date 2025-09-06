@@ -39,7 +39,7 @@ const LoginForm = () => {
     // console.log('form submitted', formData);
 
     try{
-      const response = await axios.post(`http://localhost:4000/api/v1/user/login`, formData)
+      const response = await axios.post(`/api/v1/user/login`, formData)
 
       // console.log("response: ", response);
       // console.log(response.data.data);
