@@ -4,6 +4,7 @@
 
 import { User } from "../models/user.models.js";
 import { ApiError } from "../utils/ApiError.js";
+import { ApiErrorResponse } from "../utils/ApiErrorResponse.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import { asyncHandler } from "../utils/asyncHandler.js"; 
 
@@ -18,14 +19,22 @@ const signup = asyncHandler(async(req,res)=>{
 
     const {name, email, password} = req.body;
     
+    const allowedDomains = ["gmail.com", "chapsmail.com"];
+    const domain = email.split("@")[1];
+
+    if (!allowedDomains.includes(domain)) {
+        return res.status(401).json(new ApiErrorResponse(401, "Invalid email"));
+    }
+
     if(!name || !email || !password){
         throw new ApiError(400, "All fields are required");
     }
+
     
     const existedUser = await User.findOne({email});
 
     if(existedUser){
-        throw new ApiError(403, "User already exist, please login");
+        return res.status(401).json(new ApiErrorResponse(401, "User already exist, please login"));
     }
 
     const user = await User.create({ 
@@ -61,18 +70,20 @@ const login = asyncHandler(async(req,res)=>{
     const {email, password} = req.body;
 
     if(!email || !password){
-        throw new ApiError(400, "Email or password is incorrect");
+        throw new ApiError(400, "All fields are required");
     }
 
     const existedUser = await User.findOne({email});
 
     if(!existedUser){
-        throw new ApiError(403, "User is not registered");
+        return res.status(403).json(new ApiErrorResponse(403, "User is not registered"));
+        // throw new ApiError(403, "User is not registered");
     }
 
     const isPasswordCorrect = await existedUser.matchPassword(password);
     if(!isPasswordCorrect){
-        throw new ApiError(403, "Invalid User credentials");
+        return res.status(403).json(new ApiErrorResponse(403, "Invalid User credentials"));
+        // throw new ApiError(403, "Invalid User credentials");
     }
 
     const token = await existedUser.generateAccessToken();

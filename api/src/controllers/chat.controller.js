@@ -23,7 +23,7 @@ const accessChat = asyncHandler(async(req,res)=> {
         throw new ApiError(400, "UserId not sent with request");
     }
 
-    const isChat = await Chat.find({
+    const isChat = await Chat.findOne({
         isGroupChat: false,
         $and: [
             {users: userId},
@@ -41,7 +41,7 @@ const accessChat = asyncHandler(async(req,res)=> {
         .exec();
 
 
-    if(isChat.length > 0){
+    if(isChat){
         return res.status(200).json(
             new ApiResponse(200, isChat, "successfully fetched one to one chat")
         );
@@ -53,12 +53,15 @@ const accessChat = asyncHandler(async(req,res)=> {
         isGroupChat: false,
         users: [userId, req.user._id]
     })
+    // console.log("Chat data: ", chatData)
 
     const chatDetails = await Chat.findOne({_id: chatData._id})
     .populate({
         path: "users",
         select: "name email pic",
     })
+
+    // console.log("Chat details: ", chatDetails)
 
 
     return res
